@@ -208,8 +208,9 @@ class crud
 	}
 	
 	
-	public function dataview($query) 
+	public function dataview() 
 	{
+		$query = "SELECT * FROM FLIGHT LIMIT 10";
 		$result = $this->db->query($query);
 
         if ($result->num_rows > 0) {

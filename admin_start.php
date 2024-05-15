@@ -31,7 +31,7 @@
             <th>Car</th>
         </tr>
         <?php    
-		  $crud->dataview("SELECT * FROM FLIGHT LIMIT 10"); 
+		  $crud->dataview(); 
 	    ?>
     </table> 
 
