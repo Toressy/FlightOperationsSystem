@@ -9,16 +9,16 @@ class crud
 		$this->db = $mysqli;
 	}
 	
-	public function create($DRIVER_ID, $KIDSDRIV,$AGE,$INCOME,$MSTATUS, $GENDER, $EDUCATION, $OCCUPATION) 
+	public function create($FLIGHTNUM, $ORIGIN,$DESTINATION,$DEPTIME,$ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID) 
 	{
-		$existingDriver = $this->getID($DRIVER_ID);
+		$existingFlight = $this->getID($FLIGHTNUM);
 
-        if ($existingDriver) {
+        if ($existingFlight) {
             return false;
         }
-		$stmt = $this->db->prepare("INSERT INTO Driver(DRIVER_ID, KIDSDRIV, AGE, INCOME, MSTATUS, GENDER, EDUCATION, OCCUPATION) 
-		VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("iiisssss", $DRIVER_ID, $KIDSDRIV, $AGE, $INCOME, $MSTATUS, $GENDER, $EDUCATION, $OCCUPATION);
+		$stmt = $this->db->prepare("INSERT INTO FLIGHT(FLIGHTNUM, ORIGIN, DESTINATION, DEPTIME, ARRTIME, AIRPLANE, PILOT, GATE, SCHEDULEID) 
+		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("sssssiisi", $FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
 		return $stmt->execute();
 	}
 
@@ -39,10 +39,10 @@ class crud
 	}
 
 	
-	public function getID($DRIVER_ID)  
+	public function getID($FLIGHTNUM)  
 	{
-		$stmt = $this->db->prepare("SELECT * FROM Driver WHERE DRIVER_ID=?");
-        $stmt->bind_param("i", $DRIVER_ID);
+		$stmt = $this->db->prepare("SELECT * FROM FLIGHT WHERE FLIGHTNUM=?");
+        $stmt->bind_param("i", $FLIGHTNUM);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();

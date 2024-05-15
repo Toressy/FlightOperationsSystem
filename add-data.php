@@ -1,5 +1,4 @@
 
-
 <?php
 include_once 'dbconfig.php';
 
@@ -12,8 +11,8 @@ if(isset($_POST['btn-save'])){
 	$AIRPLANE = $_POST['AIRPLANE'];
 	$PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
-    $GATE = $_POST['GATE'];
-	if($crud->create($DRIVER_ID, $KIDSDRIV, $AGE, $INCOME, $MSTATUS, $GENDER, $EDUCATION, $OCCUPATION)){
+    $SHEDULEID = $_POST['SHEDULEID'];
+	if($crud->create($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)){
 		header("Location: add-data.php?inserted");
 		exit();
 	} else {
@@ -48,39 +47,40 @@ if(isset($_GET['inserted'])){
 	<form method='post'>
     <table class='table table-bordered'>
         <tr>
-            <td>Flight number</td><td><input type='number' name='DRIVER_ID' class='form-control' required></td>
+            <td>Flight number</td><td><input type='number' name='FLIGHTNUM' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Origin</td><td><input type='text' name='KIDSDRIV' class='form-control' required></td>
+            <td>Origin</td><td><input type='text' name='ORIGIN' class='form-control' required></td>
         </tr>
 
         <tr>
-            <td>Destination</td><td><input type='text' name='AGE' class='form-control' required></td>
+            <td>Destination</td><td><input type='text' name='DESTINATION' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Departure time</td><td><input type='text' name='AGE' class='form-control' required></td>
+            <td>Departure time</td><td><input type='datetime-local' name='DEPTIME' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Arrival time</td><td><input type='text' name='AGE' class='form-control' required></td>
+            <td>Arrival time</td><td><input type='datetime-local' name='ARRTIME' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Airplane</td><td><input type='number' name='AGE' class='form-control' required></td>
+            <td>Airplane</td><td><input type='number' name='AIRPLANE' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Pilot</td><td><input type='number' name='AGE' class='form-control' required></td>
+            <td>Pilot</td><td><input type='number' name='PILOT' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Gate</td><td><input type='text' name='AGE' class='form-control' required></td>
+            <td>Gate</td><td><input type='text' name='GATE' class='form-control' required></td>
         </tr>
         <tr>
-            <td>Schedule ID</td><td><input type='number' name='AGE' class='form-control' required></td>
+            <td>Schedule ID</td><td><input type='number' name='SCHEDULEID' class='form-control' required></td>
         </tr>
     
         <tr>
             <td colspan="2">
             <button type="submit" class="btn btn-primary" name="btn-save">
-            <span class="glyphicon glyphicon-plus"></span> Add driver</button>
-            <a href="index.php" class="btn btn-large btn-success" style="float: right;">
+            <span class="glyphicon glyphicon-plus"></span> Add flight</button>
+            <a href="admin_
+            start.php" class="btn btn-large btn-success" style="float: right;">
             <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
             </td>
         </tr>
