@@ -2,16 +2,16 @@
 include_once 'dbconfig.php';
 
 if(isset($_POST['btn-update'])) {
-    $DRIVER_ID = $_GET['edit_id'];
-    $KIDSDRIV = $_POST['KIDSDRIV'];
-    $AGE = $_POST['AGE'];
-    $INCOME = $_POST['INCOME'];
+    $FLIGHTNUM = $_GET['edit_id'];
+    $ORIGIN = $_POST['ORIGIN'];
+    $DESTINATION = $_POST['DESTINATION'];
+    $DEPTIME = $_POST['DEPTIME'];
     $MSTATUS = $_POST['MSTATUS'];
     $GENDER = $_POST['GENDER'];
     $EDUCATION = $_POST['EDUCATION'];
     $OCCUPATION = $_POST['OCCUPATION'];
 
-    if($crud->update($DRIVER_ID, $KIDSDRIV, $AGE, $INCOME, $MSTATUS, $GENDER, $EDUCATION, $OCCUPATION)) {
+    if($crud->update($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $MSTATUS, $GENDER, $EDUCATION, $OCCUPATION)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -23,11 +23,11 @@ if(isset($_POST['btn-update'])) {
 }
 
 if(isset($_GET['edit_id'])) {
-    $DRIVER_ID = $_GET['edit_id'];
-    $driver = $crud->getID($DRIVER_ID);
-    $KIDSDRIV = $driver['KIDSDRIV'];
-    $AGE = $driver['AGE'];
-    $INCOME = $driver['INCOME'];
+    $FLIGHTNUM = $_GET['edit_id'];
+    $driver = $crud->getID($FLIGHTNUM);
+    $ORIGIN = $driver['ORIGIN'];
+    $DESTINATION = $driver['DESTINATION'];
+    $DEPTIME = $driver['DEPTIME'];
     $MSTATUS = $driver['MSTATUS'];
     $GENDER = $driver['GENDER'];
     $EDUCATION = $driver['EDUCATION'];
@@ -51,17 +51,17 @@ include_once 'header.php';
         
             <tr>
                 <td>KIDSDRIVE</td>
-                <td><input type='number' name='KIDSDRIV' class='form-control' value="<?php echo $KIDSDRIV; ?>" required></td>
+                <td><input type='number' name='ORIGIN' class='form-control' value="<?php echo $KIDSDRIV; ?>" required></td>
             </tr>
     
             <tr>
                 <td>AGE</td>
-                <td><input type='number' name='AGE' class='form-control' value="<?php echo $AGE; ?>" required></td>
+                <td><input type='number' name='DESTINATION' class='form-control' value="<?php echo $AGE; ?>" required></td>
             </tr>
     
             <tr>
                 <td>INCOME</td>
-                <td><input type='text' name='INCOME' class='form-control' value="<?php echo $INCOME; ?>" required></td>
+                <td><input type='text' name='DEPTIME' class='form-control' value="<?php echo $INCOME; ?>" required></td>
             </tr>
     
             <tr>

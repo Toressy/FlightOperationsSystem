@@ -19,4 +19,14 @@ $mysqli->set_charset("utf8mb4");
 
 include_once 'class.crud.php';
 $crud = new crud($mysqli);
+
+include_once 'crud_classes/flight.crud.php';
+include_once 'crud_classes/plane.crud.php';
+
+$flight = new flightCrud($mysqli);
+$plane = new planeCrud($mysqli);
+
+
+
+
 ?>

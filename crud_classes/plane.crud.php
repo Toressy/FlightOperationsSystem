@@ -1,6 +1,6 @@
 <?php
 
-class crud 
+class planeCrud 
 {
 	private $db;
 	

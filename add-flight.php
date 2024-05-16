@@ -13,10 +13,10 @@ if(isset($_POST['btn-save'])){
     $GATE = $_POST['GATE'];
     $SHEDULEID = $_POST['SHEDULEID'];
 	if($crud->create($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)){
-		header("Location: add-data.php?inserted");
+		header("Location: add-flight.php?inserted");
 		exit();
 	} else {
-		header("Location: add-data.php?failure");
+		header("Location: add-flight.php?failure");
 		exit();
 	}
 }

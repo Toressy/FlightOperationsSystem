@@ -5,8 +5,23 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 mb-3"> 
-            <a href="add-data.php" class="btn btn-large btn-info btn-block">
+            <a href="add-flight.php" class="btn btn-large btn-info btn-block">
                 <i class="glyphicon glyphicon-plus"></i> &nbsp; Add flight
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="add-staff.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Add staff
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="add-pilot.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Add pilot
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="add-plane.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Add plane
             </a>
         </div>
         
@@ -31,7 +46,7 @@
             <th>Car</th>
         </tr>
         <?php    
-		  $crud->dataview(); 
+		  $flight->dataview(); 
 	    ?>
     </table> 
 

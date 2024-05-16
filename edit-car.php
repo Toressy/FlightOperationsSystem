@@ -49,11 +49,11 @@ include_once 'header.php';
                 <td>
                     <select name="DRIVER_ID" class="form-control">
                         <?php
-                        
-                        $drivers = $crud->getAllDrivers();
+                     /*   
+                        $drivers = $crud->viewdata();
                         foreach ($drivers as $driver) {
                             echo "<option value='".$driver['DRIVER_ID']."' ".($driver['DRIVER_ID'] == $DRIVER_ID ? 'selected' : '').">".$driver['DRIVER_ID']."</option>";
-                        }
+                        }*/
                         ?>
                     </select>
                 </td>
