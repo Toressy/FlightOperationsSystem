@@ -1,30 +1,22 @@
-div class="container">
+<?php include_once 'header-pass.php'; ?>
+<div class="container">
     <div class="row">
         <div class="col-md-4 mb-3"> 
-            <a href="admin-start.php" class="btn btn-large btn-info btn-block">
+            <a href="get-flight.php" class="btn btn-large btn-info btn-block">
                 <i class="glyphicon glyphicon-plus"></i> &nbsp; All Flights
             </a>
         </div>
         <div class="col-md-4 mb-3"> 
-            <a href="menu-staff.php" class="btn btn-large btn-info btn-block">
+            <a href="get-schedule.php" class="btn btn-large btn-info btn-block">
                 <i class="glyphicon glyphicon-plus"></i> &nbsp; Review shedule
             </a>
         </div>
-        <div class="col-md-4 mb-3"> 
-            <a href="menu-pilot.php" class="btn btn-large btn-info btn-block">
-                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review pilot
-            </a>
-        </div>
-        <div class="col-md-4 mb-3"> 
-            <a href="menu-plane.php" class="btn btn-large btn-info btn-block">
-                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review plane
-            </a>
-        </div>
+        
         
     </div>
 
 <?php 
-include_once 'header-pass.php'; 
+
 
 // Check if passport is provided in the URL
 if(isset($_GET['passport'])) {
@@ -48,7 +40,7 @@ if(isset($_GET['passport'])) {
             </tr>
             <?php    
             // Fetch and display booking data associated with the passport
-            $passenger->bookingDataview($PASSPORT); 
+            $booking->bookingDataview($PASSPORT); 
             ?>
         </table> 
     </div>

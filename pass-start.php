@@ -10,7 +10,7 @@ if(isset($_POST['login'])) {
     
     if($passengerData) {
         // Passport exists, redirect to booking page or perform further actions
-        header("Location: booking.php?passport=$PASSPORT");
+        header("Location: pass-booking.php?passport=$PASSPORT");
         exit();
     } else {
         // Passport does not exist, display error message
@@ -27,7 +27,7 @@ elseif (isset($_POST['btn-save'])){
     $ADDRESS = $_POST['ADDRESS'];
 	
 	if($passenger->create($PASSPORT, $SURNAME, $NAME, $PHONE, $ADDRESS)){
-		header("Location: booking.php?passport=$PASSPORT");
+		header("Location: pass-booking.php?passport=$PASSPORT");
 		exit();
 	} else {
 		header("Location: pass-start.php?failure");

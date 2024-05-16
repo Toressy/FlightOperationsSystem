@@ -107,7 +107,7 @@ class passengerCrud
 						</a>
 					</td>
 					<td align="center">
-						<a href="delete-staff.php?delete_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-danger">
+						<a href="delete-booking.php?delete_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-danger">
 							<i class="glyphicon glyphicon-remove-circle"></i> Delete
 						</a>
 					</td>
@@ -136,42 +136,7 @@ class passengerCrud
         return $result->fetch_assoc();
     }
 
-    public function bookingDataview($PASSPORT) 
-{
-    $stmt = $this->db->prepare("SELECT * FROM BOOKING WHERE PASSPORT=?");
-    $stmt->bind_param("s", $PASSPORT);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            ?>
-            <tr>
-                <td><?php echo $row['BOOKINGID']; ?></td>
-                <td><?php echo $row['PASSPORT']; ?></td>
-                <td><?php echo $row['FLIGHTNUM']; ?></td>
-                <td><?php echo $row['SEAT']; ?></td>
-                <td><?php echo $row['CLASS']; ?></td>
-                <td align="center">
-						<a href="delete-booking.php?delete_id=<?php echo $row['BOOKINGID']; ?>" class="btn btn-danger">
-							<i class="glyphicon glyphicon-remove-circle"></i> Delete
-						</a>
-					</td>
-            </tr>
-            <?php
-        }
-    } else {
-        ?>
-        <tr>
-            <td colspan="5">No bookings found for this passport.</td>
-        </tr>
-        <?php
-    }
-
-    $stmt->close();
-}
-
-
+    
 
 
 }

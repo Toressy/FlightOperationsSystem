@@ -5,12 +5,12 @@ include_once 'dbconfig.php';
 if(isset($_POST['btn-del'])) {
     if(isset($_GET['delete_id'])) {
         $BOOKINGID = $_GET['delete_id'];
-        if ($passenger->delete($EMPNUM)) {
-            header("Location: delete-pilot.php?deleted"); // Redirect after successful deletion
+        if ($booking->delete($BOOKINGID)) {
+            header("Location: delete-booking.php?deleted"); // Redirect after successful deletion
             exit();
         } else {
             // Handle deletion failure
-            echo "Failed to delete pilot.";
+            echo "Failed to delete booking.";
         }
     } else {
         // Handle invalid delete request
@@ -18,7 +18,7 @@ if(isset($_POST['btn-del'])) {
     }
 }
 
-include_once 'header.php';
+include_once 'header-pass.php';
 ?>
 
 <div class="container">
@@ -26,7 +26,7 @@ include_once 'header.php';
     if(isset($_GET['deleted'])) {
         ?>
         <div class="alert alert-success">
-        Pilot deleted successfully 
+        Booking deleted successfully 
         </div>
         <?php
     } else {
@@ -42,45 +42,43 @@ include_once 'header.php';
 <div class="container">
     <?php
     if(isset($_GET['delete_id'])) {
-        $EMPNUM = $_GET['delete_id'];
-        $row = $pilot->getID($EMPNUM);
+        $BOOKINGID = $_GET['delete_id'];
+        $row = $booking->getID($BOOKINGID);
         if ($row) {
             ?>
             <table class='table table-bordered'>
                 <tr>
-                    <th>EMPNUM</th>
-                    <th>Surname</th>
-                    <th>Name</th>
-                    <th>Date of birth</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Hours</th>
+                    <th>Booking ID</th>
+                    <th>Passport</th>
+                    <th>Flight number</th>
+                    <th>Seat </th>
+                    <th>Class</th>
                 </tr>
                 <tr>
-                    <td><?php echo $row['EMPNUM']; ?></td>
-                    <td><?php echo $row['SURNAME']; ?></td>
-                    <td><?php echo $row['NAME']; ?></td>
-                    <td><?php echo $row['DATEOFBIRTH']; ?></td>
-                    <td><?php echo $row['PHONE']; ?></td>
-                    <td><?php echo $row['ADDRESS']; ?></td>
-                    <td><?php echo $row['TOTALFLIGHTHOURS']; ?></td>
+                    <td><?php echo $row['BOOKINGID']; ?></td>
+                    <td><?php echo $row['PASSPORT']; ?></td>
+                    <td><?php echo $row['FLIGHTNUM']; ?></td>
+                    <td><?php echo $row['SEAT']; ?></td>
+                    <td><?php echo $row['CLASS']; ?></td>
                     
                 </tr>
             </table>
             <form method="post">
-                <input type="hidden" name="EMPNUM" value="<?php echo $row['EMPNUM']; ?>" />
+                <input type="hidden" name="BOOKINGID" value="<?php echo $row['BOOKINGID']; ?>" />
                 <button class="btn btn-large btn-primary" type="submit" name="btn-del">
                 <i class="glyphicon glyphicon-trash"></i> &nbsp; Yes</button>
-                <a href="menu-pilot.php" class="btn btn-large btn-success">
-                <i class="glyphicon glyphicon-backward"></i> &nbsp; No</a>
+                <a href="pass-booking.php?passport=<?php echo $row['PASSPORT']; ?>" class="btn btn-large btn-success">
+                    <i class="glyphicon glyphicon-backward"></i> &nbsp; No
+                </a>
+
             </form>
             <?php
         } else {
-            echo "Pilot not found.";
+            echo "Booking not found.";
         }
     } else {
         ?>
-        <a href="menu-pilot.php" class="btn btn-large btn-success" style="float: right;">
+        <a href="pass-booking.php?passport=<?php echo $row['PASSPORT']; ?>" class="btn btn-large btn-success" style="float: right;">
         <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
         <?php
     }

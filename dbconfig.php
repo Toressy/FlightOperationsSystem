@@ -25,6 +25,7 @@ include_once 'crud_classes/staff.crud.php';
 include_once 'crud_classes/pilot.crud.php';
 include_once 'crud_classes/plane.crud.php';
 include_once 'crud_classes/passenger.crud.php';
+include_once 'crud_classes/booking.crud.php';
 
 
 $flight = new flightCrud($mysqli);
@@ -32,6 +33,7 @@ $staff = new staffCrud($mysqli);
 $pilot = new pilotCrud($mysqli);
 $plane = new planeCrud($mysqli);
 $passenger = new passengerCrud($mysqli);
+$booking = new bookingCrud($mysqli);
 
 
 
