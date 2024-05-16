@@ -39,6 +39,19 @@ class staffCrud
         return $result->fetch_assoc();
 	}
 
+    public function getFlight($EMPNUM)
+    {
+        $stmt = $this->db->prepare("SELECT FLIGHT.FLIGHTNUM, FLIGHT.ORIGIN, FLIGHT.DESTINATION, FLIGHT.DEPTIME, FLIGHT.ARRTIME 
+        FROM FLIGHT
+        INNER JOIN CREW ON FLIGHT.FLIGHTNUM = CREW.FLIGHTNUM
+        WHERE CREW.EMPNUM = ?;
+        ");
+        $stmt->bind_param("i", $EMPNUM);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
 	
 
 	
