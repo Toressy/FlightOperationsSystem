@@ -50,6 +50,17 @@ class scheduleCrud
         return $stmt->execute();
 	}
 
+    public function delete($SCHEDULEID) 
+{
+   
+    $stmt = $this->db->prepare("DELETE FROM SCHEDULE WHERE SCHEDULEID=?");
+    $stmt->bind_param("s", $SCHEDULEID);
+    $result = $stmt->execute();
+    $stmt->close();
+
+    return $result;
+}
+    
     
 	
 	public function dataview() 
@@ -62,7 +73,7 @@ class scheduleCrud
                 ?>
                 <tr>
                     <td><?php echo $row['SCHEDULEID']; ?></td>
-                    <td><?php echo $row['SCHEDULEID']; ?></td>
+                    <td><?php echo $row['SCHEDULETYPE']; ?></td>
                     <td><?php echo $row['ORIGIN']; ?></td>
                     <td><?php echo $row['DESTINATION']; ?></td>
                     <td><?php echo $row['DEPTIME']; ?></td>

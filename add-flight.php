@@ -11,7 +11,7 @@ if(isset($_POST['btn-save'])){
 	$AIRPLANE = $_POST['AIRPLANE'];
 	$PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
-    $SHEDULEID = $_POST['SHEDULEID'];
+    $SCHEDULEID = $_POST['SCHEDULEID'];
 	if($crud->create($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)){
 		header("Location: add-flight.php?inserted");
 		exit();
@@ -79,8 +79,7 @@ if(isset($_GET['inserted'])){
             <td colspan="2">
             <button type="submit" class="btn btn-primary" name="btn-save">
             <span class="glyphicon glyphicon-plus"></span> Add flight</button>
-            <a href="admin_
-            start.php" class="btn btn-large btn-success" style="float: right;">
+            <a href="admin-start.php" class="btn btn-large btn-success" style="float: right;">
             <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
             </td>
         </tr>
