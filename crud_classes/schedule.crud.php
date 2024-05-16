@@ -96,11 +96,43 @@ class scheduleCrud
         } else {
             ?>
             <tr>
-                <td colspan="7">No flight found...</td>
+                <td colspan="7">No schedule found...</td>
             </tr>
             <?php
         }
 	}	
+
+    
+    public function dataviewPass() 
+	{
+		$query = "SELECT * FROM SCHEDULE LIMIT 10";
+		$result = $this->db->query($query);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                ?>
+                <tr>
+                    <td><?php echo $row['SCHEDULEID']; ?></td>
+                    <td><?php echo $row['SCHEDULETYPE']; ?></td>
+                    <td><?php echo $row['ORIGIN']; ?></td>
+                    <td><?php echo $row['DESTINATION']; ?></td>
+                    <td><?php echo $row['DEPTIME']; ?></td>
+                    <td><?php echo $row['ARRTIME']; ?></td>
+                    
+
+					
+                </tr>
+                <?php
+            }
+        } else {
+            ?>
+            <tr>
+                <td colspan="7">No schedule found...</td>
+            </tr>
+            <?php
+        }
+	}	
+
 
 
 
