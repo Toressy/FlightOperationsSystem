@@ -26,7 +26,7 @@ class flightCrud
 	public function getID($FLIGHTNUM)  
 	{
 		$stmt = $this->db->prepare("SELECT * FROM FLIGHT WHERE FLIGHTNUM=?");
-        $stmt->bind_param("i", $FLIGHTNUM);
+        $stmt->bind_param("s", $FLIGHTNUM);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
@@ -93,20 +93,20 @@ class flightCrud
 					<td><?php echo $row['AIRPLANE']; ?></td>
 					<td><?php echo $row['PILOT']; ?></td>
 					<td><?php echo $row['GATE']; ?></td>
-					<td><?php echo $row['SHEDULEID']; ?></td>
+					<td><?php echo $row['SCHEDULEID']; ?></td>
                     <td align="center">
-						<a href="edit-data.php?edit_id=<?php echo $row['DRIVER_ID']; ?>" class="btn btn-warning">
+						<a href="edit-flight.php?edit_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-warning">
 							<i class="glyphicon glyphicon-edit"></i> Edit
 						</a>
 					</td>
 					<td align="center">
-						<a href="delete.php?delete_id=<?php echo $row['DRIVER_ID']; ?>" class="btn btn-danger">
+						<a href="delete.php?delete_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-danger">
 							<i class="glyphicon glyphicon-remove-circle"></i> Delete
 						</a>
 					</td>
 
 					<td align="center">
-						<a href="show-car.php?driver_id=<?php echo $row['DRIVER_ID']; ?>" class="btn btn-info">
+						<a href="show-car.php?driver_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-info">
 							Show Cars
 						</a>
 					</td>

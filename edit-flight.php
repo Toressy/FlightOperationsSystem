@@ -6,12 +6,13 @@ if(isset($_POST['btn-update'])) {
     $ORIGIN = $_POST['ORIGIN'];
     $DESTINATION = $_POST['DESTINATION'];
     $DEPTIME = $_POST['DEPTIME'];
-    $MSTATUS = $_POST['MSTATUS'];
-    $GENDER = $_POST['GENDER'];
-    $EDUCATION = $_POST['EDUCATION'];
-    $OCCUPATION = $_POST['OCCUPATION'];
+    $ARRTIME = $_POST['ARRTIME'];
+    $AIRPLANE = $_POST['AIRPLANE'];
+    $PILOT = $_POST['PILOT'];
+    $GATE = $_POST['GATE'];
+    $SCHEDULEID = $_POST['SCHEDULEID'];
 
-    if($crud->update($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $MSTATUS, $GENDER, $EDUCATION, $OCCUPATION)) {
+    if($flight->update($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -24,14 +25,15 @@ if(isset($_POST['btn-update'])) {
 
 if(isset($_GET['edit_id'])) {
     $FLIGHTNUM = $_GET['edit_id'];
-    $driver = $crud->getID($FLIGHTNUM);
-    $ORIGIN = $driver['ORIGIN'];
-    $DESTINATION = $driver['DESTINATION'];
-    $DEPTIME = $driver['DEPTIME'];
-    $MSTATUS = $driver['MSTATUS'];
-    $GENDER = $driver['GENDER'];
-    $EDUCATION = $driver['EDUCATION'];
-    $OCCUPATION = $driver['OCCUPATION'];
+    $flightget = $flight->getID($FLIGHTNUM);
+    $ORIGIN = $flightget['ORIGIN'];
+    $DESTINATION = $flightget['DESTINATION'];
+    $DEPTIME = $flightget['DEPTIME'];
+    $ARRTIME = $flightget['ARRTIME'];
+    $AIRPLANE = $flightget['AIRPLANE'];
+    $PILOT = $flightget['PILOT'];
+    $GATE = $flightget['GATE'];
+    $SCHEDULEID = $flightget['SCHEDULEID'];
 }
 
 include_once 'header.php';
@@ -50,58 +52,50 @@ include_once 'header.php';
         <table class='table table-bordered'>
         
             <tr>
-                <td>KIDSDRIVE</td>
-                <td><input type='number' name='ORIGIN' class='form-control' value="<?php echo $KIDSDRIV; ?>" required></td>
+                <td>ORIGIN</td>
+                <td><input type='text' name='ORIGIN' class='form-control' value="<?php echo $ORIGIN; ?>" required></td>
             </tr>
     
             <tr>
-                <td>AGE</td>
-                <td><input type='number' name='DESTINATION' class='form-control' value="<?php echo $AGE; ?>" required></td>
+                <td>DESTINATION</td>
+                <td><input type='text' name='DESTINATION' class='form-control' value="<?php echo $DESTINATION; ?>" required></td>
             </tr>
     
             <tr>
-                <td>INCOME</td>
-                <td><input type='text' name='DEPTIME' class='form-control' value="<?php echo $INCOME; ?>" required></td>
+                <td>DEPTIME</td>
+                <td><input type='datetime-local' name='DEPTIME' class='form-control' value="<?php echo $DEPTIME; ?>" required></td>
+            </tr>
+            <tr>
+                <td>ARRTIME</td>
+                <td><input type='datetime-local' name='ARRTIME' class='form-control' value="<?php echo $ARRTIME; ?>" required></td>
+            </tr>
+            <tr>
+                <td>AIRPLANE</td>
+                <td><input type='number' name='AIRPLANE' class='form-control' value="<?php echo $AIRPLANE; ?>" required></td>
+            </tr>
+            <tr>
+                <td>PILOT</td>
+                <td><input type='number' name='PILOT' class='form-control' value="<?php echo $PILOT; ?>" required></td>
             </tr>
     
+           
+
             <tr>
-                <td>MSTATUS</td>
-                <td>
-                    <select name='MSTATUS' class='form-control' required>
-                        <option value='Yes' <?php if($MSTATUS == 'Yes') echo 'selected'; ?>>Yes</option>
-                        <option value='No' <?php if($MSTATUS == 'No') echo 'selected'; ?>>No</option>
-                    </select>
-                </td>
+                <td>GATE</td>
+                <td><input type='text' name='GATE' class='form-control' value="<?php echo $GATE; ?>" required></td>
             </tr>
 
             <tr>
-                <td>GENDER</td>
-                <td>
-                    <select name='GENDER' class='form-control' required>
-                        <option value='F' <?php if($GENDER == 'F') echo 'selected'; ?>>F</option>
-                        <option value='M' <?php if($GENDER == 'M') echo 'selected'; ?>>M</option>
-                    </select>
-                </td>
-            </tr>
-
-
-
-            <tr>
-                <td>EDUCATION</td>
-                <td><input type='text' name='EDUCATION' class='form-control' value="<?php echo $EDUCATION; ?>" required></td>
-            </tr>
-
-            <tr>
-                <td>OCCUPATION</td>
-                <td><input type='text' name='OCCUPATION' class='form-control' value="<?php echo $OCCUPATION; ?>" required></td>
+                <td>SCHEDULEID</td>
+                <td><input type='number' name='SCHEDULEID' class='form-control' value="<?php echo $SCHEDULEID; ?>" required></td>
             </tr>
     
             <tr>
                 <td colspan="2">
                     <button type="submit" class="btn btn-primary" name="btn-update">
-                    <span class="glyphicon glyphicon-edit"></span>  Edit driver
+                    <span class="glyphicon glyphicon-edit"></span>  Edit flight
                     </button>
-                    <a href="index.php" class="btn btn-large btn-success" style="float: right;"><i class="glyphicon glyphicon-backward"></i> &nbsp; Cancel </a>
+                    <a href="admin_start.php" class="btn btn-large btn-success" style="float: right;"><i class="glyphicon glyphicon-backward"></i> &nbsp; Cancel </a>
                 </td>
             </tr>
         </table>

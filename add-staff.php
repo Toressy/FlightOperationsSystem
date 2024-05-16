@@ -7,8 +7,10 @@ if(isset($_POST['btn-save'])){
     $SURNAME = $_POST['SURNAME'];
     $NAME = $_POST['NAME'];
 	$DATEOFBIRTH = $_POST['DATEOFBIRTH'];
+    $PHONE = $_POST['PHONE'];
+    $ADDRESS = $_POST['ADDRESS'];
 	
-	if($crud->createStaff($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH)){
+	if($staff->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS)){
 		header("Location: add-staff.php?inserted");
 		exit();
 	} else {
@@ -54,6 +56,12 @@ if(isset($_GET['inserted'])){
         </tr>
         <tr>
             <td>DATEOFBIRTH</td><td><input type='date' name='DATEOFBIRTH' class='form-control' required></td>
+        </tr>
+        <tr>
+            <td>PHONE</td><td><input type='text' name='PHONE' class='form-control' required></td>
+        </tr>
+        <tr>
+            <td>ADDRESS</td><td><input type='text' name='ADDRESS' class='form-control' required></td>
         </tr>
         
         <tr>

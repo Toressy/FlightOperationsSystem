@@ -11,3 +11,30 @@
     	<div class="container">
     	</div>
 	</div>
+	<?php include_once 'dbconfig.php'; ?> 
+
+	<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-3"> 
+            <a href="admin-start.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review flight
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="menu-staff.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review staff
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="menu-pilot.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review pilot
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="menu-plane.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review plane
+            </a>
+        </div>
+        
+    </div>
+</div>
