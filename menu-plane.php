@@ -7,8 +7,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 mb-3"> 
-            <a href="add-pilot.php" class="btn btn-large btn-info btn-block">
-                <i class="glyphicon glyphicon-plus"></i> &nbsp; Add pilot
+            <a href="add-plane.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Add plane
             </a>
         </div>
         
@@ -20,18 +20,14 @@
 <div class="container"> 
 	<table class='table table-bordered table-responsive'> 
         <tr>
-            <th>Employee number</th>
-            <th>Surname </th>
-            <th>Name</th>
-            <th>Date of birth</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Total hours</th>
+            <th>Numser</th>
+            <th>Aircraft </th>
+            
             
             <th colspan="2" align="center">Actions</th>
         </tr>
         <?php    
-		  $pilot->dataview(); 
+		  $plane->dataview(); 
 	    ?>
     </table> 
 

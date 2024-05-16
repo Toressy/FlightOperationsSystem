@@ -7,9 +7,12 @@ if(isset($_POST['btn-save'])){
     $SURNAME = $_POST['SURNAME'];
     $NAME = $_POST['NAME'];
 	$DATEOFBIRTH = $_POST['DATEOFBIRTH'];
+    $PHONE = $_POST['PHONE'];
+    $ADDRESS = $_POST['ADDRESS'];
+
     $TOTALFLIGHTHOURS = $_POST['TOTALFLIGHTHOURS'];
 	
-	if($crud->createPilot($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $TOTALFLIGHTHOURS)){
+	if($pilot->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)){
 		header("Location: add-pilot.php?inserted");
 		exit();
 	} else {
@@ -57,6 +60,13 @@ if(isset($_GET['inserted'])){
             <td>DATEOFBIRTH</td><td><input type='date' name='DATEOFBIRTH' class='form-control' required></td>
         </tr>
         <tr>
+            <td>PHONE</td><td><input type='text' name='PHONE' class='form-control' required></td>
+        </tr>
+        <tr>
+            <td>ADDRESS</td><td><input type='text' name='ADDRESS' class='form-control' required></td>
+        </tr>
+
+        <tr>
             <td>TOTALFLIGHTHOURS</td><td><input type='number' step='0.01' name='TOTALFLIGHTHOURS' class='form-control' required></td>
         </tr>
         
@@ -64,8 +74,8 @@ if(isset($_GET['inserted'])){
         <tr>
             <td colspan="2">
             <button type="submit" class="btn btn-primary" name="btn-save">
-            <span class="glyphicon glyphicon-plus"></span> Add flight</button>
-            <a href="admin_start.php" class="btn btn-large btn-success" style="float: right;">
+            <span class="glyphicon glyphicon-plus"></span> Add pilot</button>
+            <a href="menu-pilot.php" class="btn btn-large btn-success" style="float: right;">
             <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
             </td>
         </tr>

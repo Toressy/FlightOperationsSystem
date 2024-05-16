@@ -1,6 +1,6 @@
 <?php
 
-class staffCrud 
+class pilotCrud 
 {
 	private $db;
 	
@@ -11,18 +11,21 @@ class staffCrud
 	
 	
 
-	public function create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $TOTALFLIGHTHOURS)
+	public function create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)
 	{
 		$existing = $this->getID($EMPNUM);
 
         if ($existing) {
             return false;
         }
-		$stmt = $this->db->prepare("INSERT INTO STAFF (EMPNUM, SURNAME, NAME, DATEOFBIRTH) 
-		VALUES(?, ?, ?, ?)");
-		$stmt->bind_param("isss", $EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH);
-		$stmt->execute();
-        $stmt->close();
+		$staffCrudObj = new staffCrud($this->db);
+        
+        // Call create method from staffCrud
+        $staffCreateResult = $staffCrudObj->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS);
+
+        if (!$staffCreateResult) {
+            return false; // Handle if staff creation fails
+        }
         $stmt = $this->db->prepare("INSERT INTO PILOT (EMPNUM, TOTALFLIGHTHOURS) 
 		VALUES(?, ?)");
         $stmt->bind_param("ii", $EMPNUM,  $TOTALFLIGHTHOURS);
@@ -44,18 +47,20 @@ class staffCrud
 	}
 
 	
-	public function update($EMPNUM,$SURNAME, $NAME,$DATEOFBIRTH, $TOTALFLIGHTHOURS)
+	public function update($EMPNUM,$SURNAME, $NAME,$DATEOFBIRTH,$PHONE, $ADDRESS,  $TOTALFLIGHTHOURS)
 	{
+
+        $staffCrudObj = new staffCrud($this->db);
         
-		$stmt1 = $this->db->prepare("UPDATE STAFF SET  SURNAME=?, 
-                                                        NAME=?, 
-                                                        DATEOFBIRTH=?
-														
-													
-                                    WHERE EMPNUM=?");
-        $stmt1->bind_param("ssii", $SURNAME, $NAME, $DATEOFBIRTH, $EMPNUM);
-        $result = $stmt1->execute();
-        $stmt1->close();
+        // Call update method from staffCrud
+        $staffUpdateResult = $staffCrudObj->update($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS);
+
+        if (!$staffUpdateResult) {
+            return false; // Handle if staff update fails
+        }
+
+        
+		
         $stmt1 = $this->db->prepare("UPDATE PILOT SET  TOTALFLIGHTHOURS=?
 														
 													
@@ -79,20 +84,19 @@ class staffCrud
 	
 	public function delete($EMPNUM) 
 {
-    $stmt = $this->db->prepare("DELETE FROM STAFFPHONE WHERE EMPNUM=?");
-    $stmt->bind_param("i", $EMPNUM);
-    $result = $stmt->execute();
-    $stmt->close();
-    $stmt = $this->db->prepare("DELETE FROM STAFFADDRESS WHERE EMPNUM=?");
-    $stmt->bind_param("i", $EMPNUM);
-    $result = $stmt->execute();
-    $stmt->close();
-    $stmt = $this->db->prepare("DELETE FROM STAFF WHERE EMPNUM=?");
-    $stmt->bind_param("i", $EMPNUM);
-    $result = $stmt->execute();
-    $stmt->close();
+    $staffCrudObj = new staffCrud($this->db);
+        
+    // Call delete method from staffCrud
+    $staffDeleteResult = $staffCrudObj->delete($EMPNUM);
 
-    return $result;
+    if (!$staffDeleteResult) {
+        return false; // Handle if staff delete fails
+    }
+    $stmt = $this->db->prepare("DELETE FROM PILOT WHERE EMPNUM=?");
+    $stmt->bind_param("i", $EMPNUM);
+    return $stmt->execute();
+    
+
 }
     
 	
@@ -100,10 +104,9 @@ class staffCrud
 	
 	public function dataview() 
 	{
-		$query = "SELECT s.*, sa.ADDRESS, sp.PHONENUMBER 
+		$query = "SELECT s.*, p.TOTALFLIGHTHOURS
         FROM STAFF s 
-        LEFT JOIN STAFFADDRESS sa ON s.EMPNUM = sa.EMPNUM 
-        LEFT JOIN STAFFPHONE sp ON s.EMPNUM = sp.EMPNUM 
+        LEFT JOIN PILOT p ON s.EMPNUM = p.EMPNUM 
         LIMIT 10";
 		$result = $this->db->query($query);
 
@@ -114,10 +117,12 @@ class staffCrud
                     <td><?php echo $row['EMPNUM']; ?></td>
                     <td><?php echo $row['SURNAME']; ?></td>
                     <td><?php echo $row['NAME']; ?></td>
-                    <td><?php echo $row['PHONENUMBER']; ?></td>
+                    <td><?php echo $row['DATEOFBIRTH']; ?></td>
+                    <td><?php echo $row['PHONE']; ?></td>
                     <td><?php echo $row['ADDRESS']; ?></td>
+                    <td><?php echo $row['TOTALFLIGHTHOURS']; ?></td>
                     <td align="center">
-						<a href="edit-staff.php?edit_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-warning">
+						<a href="edit-pilot.php?edit_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-warning">
 							<i class="glyphicon glyphicon-edit"></i> Edit
 						</a>
 					</td>

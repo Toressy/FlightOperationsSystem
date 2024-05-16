@@ -5,14 +5,14 @@ include_once 'dbconfig.php';
 if(isset($_POST['btn-save'])){
     $NUMSER = $_POST['NUMSER'];
     $AIRCRAFT = $_POST['AIRCRAFT'];
-	/*
-	if($crud->createPlane($NUMSER, $AIRCRAFT)){
+	
+	if($plane->create($NUMSER, $AIRCRAFT)){
 		header("Location: add-plane.php?inserted");
 		exit();
 	} else {
 		header("Location: add-plane.php?failure");
 		exit();
-	}*/
+	}
 }
 
 include_once 'header.php';
@@ -63,7 +63,7 @@ if(isset($_GET['inserted'])){
             <td colspan="2">
             <button type="submit" class="btn btn-primary" name="btn-save">
             <span class="glyphicon glyphicon-plus"></span> Add plane</button>
-            <a href="admin_start.php" class="btn btn-large btn-success" style="float: right;">
+            <a href="menu-plane.php" class="btn btn-large btn-success" style="float: right;">
             <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
             </td>
         </tr>

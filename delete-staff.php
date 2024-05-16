@@ -17,7 +17,7 @@ include_once 'header.php';
     if(isset($_GET['deleted'])) {
         ?>
         <div class="alert alert-success">
-        Driver deleted successfully 
+        Staff deleted successfully 
         </div>
         <?php
     } else {

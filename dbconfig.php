@@ -22,10 +22,12 @@ $crud = new crud($mysqli);
 
 include_once 'crud_classes/flight.crud.php';
 include_once 'crud_classes/staff.crud.php';
+include_once 'crud_classes/pilot.crud.php';
 include_once 'crud_classes/plane.crud.php';
 
 $flight = new flightCrud($mysqli);
 $staff = new staffCrud($mysqli);
+$pilot = new pilotCrud($mysqli);
 $plane = new planeCrud($mysqli);
 
 
