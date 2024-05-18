@@ -1,4 +1,5 @@
 <?php
+include_once("interface.crud.php");
 
  class  Flight {
     private $flightNum;
@@ -34,7 +35,7 @@
     public function getScheduleId() { return $this->scheduleId; }
 }
 
-class FlightCrud {
+class FlightCrud implements CrudInterface{
     private $db;
 
     public function __construct(Database $database) {

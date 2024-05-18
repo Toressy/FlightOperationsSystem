@@ -1,5 +1,5 @@
 <?php
-
+include_once("interface.crud.php");
 class planeCrud 
 {
 	private $db;
