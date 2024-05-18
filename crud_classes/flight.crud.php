@@ -1,128 +1,145 @@
 <?php
 
-class flightCrud 
-{
-	private $db;
-	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
-	
-	public function create($FLIGHTNUM, $ORIGIN,$DESTINATION,$DEPTIME,$ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID) 
-	{
-		$existingFlight = $this->getID($FLIGHTNUM);
+ class  Flight {
+    private $flightNum;
+    private $origin;
+    private $destination;
+    private $depTime;
+    private $arrTime;
+    private $airplane;
+    private $pilot;
+    private $gate;
+    private $scheduleId;
 
-        if ($existingFlight) {
-            return false;
-        }
-		$stmt = $this->db->prepare("INSERT INTO FLIGHT(FLIGHTNUM, ORIGIN, DESTINATION, DEPTIME, ARRTIME, AIRPLANE, PILOT, GATE, SCHEDULEID) 
-		VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("sssssiisi", $FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
-		return $stmt->execute();
-	}
-
-	
-	public function getID($FLIGHTNUM)  
-	{
-		$stmt = $this->db->prepare("SELECT * FROM FLIGHT WHERE FLIGHTNUM=?");
-        $stmt->bind_param("s", $FLIGHTNUM);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
-	}
-
-
-
-
-
-	
-	public function update($FLIGHTNUM, $ORIGIN,$DESTINATION,$DEPTIME,$ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)
-	{
-		$stmt = $this->db->prepare("UPDATE FLIGHT SET ORIGIN=?, 
-                                                        DESTINATION=?, 
-                                                        DEPTIME=?,
-														ARRTIME=?,
-														AIRPLANE=?,
-														PILOT=?,
-                                                        GATE=?,
-                                                        SCHEDULEID=?
-                                    WHERE FLIGHTNUM=?");
-        $stmt->bind_param("ssssiisis", $ORIGIN,$DESTINATION,$DEPTIME,$ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID, $FLIGHTNUM);
-        return $stmt->execute();
-	}
-/*
-	
-	public function delete($FLIGHTNUM) //переробити бо спочатку треба видалити все інше
-{
-    $stmt = $this->db->prepare("SELECT CAR_ID FROM Car WHERE DRIVER_ID=?");
-    $stmt->bind_param("i", $FLIGHTNUM);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-
-    while ($row = $result->fetch_assoc()) {
-        $carID = $row['CAR_ID'];
-        $this->deleteClaim($carID); 
-        $this->deleteCar($carID);   
+    public function __construct($flightNum, $origin, $destination, $depTime, $arrTime, $airplane, $pilot, $gate, $scheduleId) {
+        $this->flightNum = $flightNum;
+        $this->origin = $origin;
+        $this->destination = $destination;
+        $this->depTime = $depTime;
+        $this->arrTime = $arrTime;
+        $this->airplane = $airplane;
+        $this->pilot = $pilot;
+        $this->gate = $gate;
+        $this->scheduleId = $scheduleId;
     }
 
-    $stmt = $this->db->prepare("DELETE FROM Driver WHERE DRIVER_ID=?");
-    $stmt->bind_param("i", $FLIGHTNUM);
-    $result = $stmt->execute();
-    $stmt->close();
+    public function getFlightNum() { return $this->flightNum; }
+    public function getOrigin() { return $this->origin; }
+    public function getDestination() { return $this->destination; }
+    public function getDepTime() { return $this->depTime; }
+    public function getArrTime() { return $this->arrTime; }
+    public function getAirplane() { return $this->airplane; }
+    public function getPilot() { return $this->pilot; }
+    public function getGate() { return $this->gate; }
+    public function getScheduleId() { return $this->scheduleId; }
+}
 
-    return $result;
-}*/
-    
-	
-	public function dataview() 
-	{
-		$query = "SELECT * FROM FLIGHT LIMIT 10";
-		$result = $this->db->query($query);
+class FlightCrud {
+    private $db;
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                ?>
-                <tr>
-                    <td><?php echo $row['FLIGHTNUM']; ?></td>
-                    <td><?php echo $row['ORIGIN']; ?></td>
-                    <td><?php echo $row['DESTINATION']; ?></td>
-                    <td><?php echo $row['DEPTIME']; ?></td>
-                    <td><?php echo $row['ARRTIME']; ?></td>
-					<td><?php echo $row['AIRPLANE']; ?></td>
-					<td><?php echo $row['PILOT']; ?></td>
-					<td><?php echo $row['GATE']; ?></td>
-					<td><?php echo $row['SCHEDULEID']; ?></td>
-                    <td align="center">
-						<a href="edit-flight.php?edit_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-warning">
-							<i class="glyphicon glyphicon-edit"></i> Edit
-						</a>
-					</td>
-					<td align="center">
-						<a href="delete.php?delete_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-danger">
-							<i class="glyphicon glyphicon-remove-circle"></i> Delete
-						</a>
-					</td>
+    public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
 
-					<td align="center">
-						<a href="show-car.php?driver_id=<?php echo $row['FLIGHTNUM']; ?>" class="btn btn-info">
-							Show Cars
-						</a>
-					</td>
-                </tr>
-                <?php
-            }
-        } else {
-            ?>
-            <tr>
-                <td colspan="7">No flight found...</td>
-            </tr>
-            <?php
+    public function create($flight) {
+       
+        if ($this->getId($flight->getFlightNum())) {
+            return false;
         }
-	}	
 
+        $flightNum = $flight->getFlightNum();
+        $origin = $flight->getOrigin();
+        $destination = $flight->getDestination();
+        $depTime = $flight->getDepTime();
+        $arrTime = $flight->getArrTime();
+        $airplane = $flight->getAirplane();
+        $pilot = $flight->getPilot();
+        $gate = $flight->getGate();
+        $scheduleId = $flight->getScheduleId();
 
+        $stmt = $this->db->prepare("INSERT INTO FLIGHT (FLIGHTNUM, ORIGIN, DESTINATION, DEPTIME, ARRTIME, AIRPLANE, PILOT, GATE, SCHEDULEID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssiisi", $flightNum, $origin, $destination, $depTime, $arrTime, $airplane, $pilot, $gate, $scheduleId);
+        return $stmt->execute();
+    }
 
+    public function getId($flightNum) {
+        $stmt = $this->db->prepare("SELECT * FROM FLIGHT WHERE FLIGHTNUM=?");
+        $stmt->bind_param("s", $flightNum);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        $FLIGHTNUM = $flightNum ;
+        $ORIGIN = $result['ORIGIN'];
+        $DESTINATION = $result['DESTINATION'];
+        $DEPTIME = $result['DEPTIME'];
+        $ARRTIME = $result['ARRTIME'];
+        $AIRPLANE = $result['AIRPLANE'];
+        $PILOT = $result['PILOT'];
+        $GATE = $result['GATE'];
+        $SCHEDULEID = $result['SCHEDULEID'];
+
+        return new Flight ($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+    }
+    
+    public function getAll($limit = 10) {
+        $query = "SELECT * FROM FLIGHT LIMIT ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $flights = [];
+        while ($row = $result->fetch_assoc()) {
+            $FLIGHTNUM = $row["FLIGHTNUM"];
+            $ORIGIN = $row['ORIGIN'];
+            $DESTINATION = $row['DESTINATION'];
+            $DEPTIME = $row['DEPTIME'];
+            $ARRTIME = $row['ARRTIME'];
+            $AIRPLANE = $row['AIRPLANE'];
+            $PILOT = $row['PILOT'];
+            $GATE = $row['GATE'];
+            $SCHEDULEID = $row['SCHEDULEID'];
+            $flight = new Flight($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+            $flights[] = $flight;
+        }
+        return $flights;
+    }
+
+    public function update($flight) {
+        
+
+        $flightNum = $flight->getFlightNum();
+        $origin = $flight->getOrigin();
+        $destination = $flight->getDestination();
+        $depTime = $flight->getDepTime();
+        $arrTime = $flight->getArrTime();
+        $airplane = $flight->getAirplane();
+        $pilot = $flight->getPilot();
+        $gate = $flight->getGate();
+        $scheduleId = $flight->getScheduleId();
+
+        
+        $stmt = $this->db->prepare("UPDATE FLIGHT SET ORIGIN=?, 
+                                                    DESTINATION=?, 
+                                                    DEPTIME=?,
+                                                    ARRTIME=?,
+                                                    AIRPLANE=?,
+                                                    PILOT=?,
+                                                    GATE=?,
+                                                    SCHEDULEID=?
+                                            WHERE FLIGHTNUM=?");
+        $stmt->bind_param("ssssiisis", $origin, $destination, $depTime, $arrTime, $airplane, $pilot, $gate, $scheduleId, $flightNum);
+        return $stmt->execute();
+    }
+
+    public function delete($flightNum) {
+        $stmt = $this->db->prepare("DELETE FROM FLIGHT WHERE FLIGHTNUM=?");
+        $stmt->bind_param("s", $flightNum);
+        return $stmt->execute();
+    }
+
+   
+
+    
 }
 ?>

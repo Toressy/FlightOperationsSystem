@@ -11,8 +11,8 @@ if(isset($_POST['btn-update'])) {
     $PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
     $SCHEDULEID = $_POST['SCHEDULEID'];
-
-    if($flight->update($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)) {
+    $flight = new Flight($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+    if($flightCrud->update($flight)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -25,15 +25,16 @@ if(isset($_POST['btn-update'])) {
 
 if(isset($_GET['edit_id'])) {
     $FLIGHTNUM = $_GET['edit_id'];
-    $flightget = $flight->getID($FLIGHTNUM);
-    $ORIGIN = $flightget['ORIGIN'];
-    $DESTINATION = $flightget['DESTINATION'];
-    $DEPTIME = $flightget['DEPTIME'];
-    $ARRTIME = $flightget['ARRTIME'];
-    $AIRPLANE = $flightget['AIRPLANE'];
-    $PILOT = $flightget['PILOT'];
-    $GATE = $flightget['GATE'];
-    $SCHEDULEID = $flightget['SCHEDULEID'];
+    $flightget = $flightCrud->getID($FLIGHTNUM);
+    
+    $ORIGIN = $flightget->getOrigin();
+    $DESTINATION = $flightget->getDestination();
+    $DEPTIME = $flightget->getDepTime();
+    $ARRTIME = $flightget->getArrTime();
+    $AIRPLANE = $flightget->getAirplane();
+    $PILOT = $flightget->getPilot();
+    $GATE = $flightget->getGate();
+    $SCHEDULEID = $flightget->getScheduleId();
 }
 
 include_once 'header.php';
@@ -95,7 +96,7 @@ include_once 'header.php';
                     <button type="submit" class="btn btn-primary" name="btn-update">
                     <span class="glyphicon glyphicon-edit"></span>  Edit flight
                     </button>
-                    <a href="admin_start.php" class="btn btn-large btn-success" style="float: right;"><i class="glyphicon glyphicon-backward"></i> &nbsp; Cancel </a>
+                    <a href="admin-start.php" class="btn btn-large btn-success" style="float: right;"><i class="glyphicon glyphicon-backward"></i> &nbsp; Cancel </a>
                 </td>
             </tr>
         </table>

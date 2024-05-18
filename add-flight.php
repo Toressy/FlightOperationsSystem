@@ -12,7 +12,8 @@ if(isset($_POST['btn-save'])){
 	$PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
     $SCHEDULEID = $_POST['SCHEDULEID'];
-	if($crud->create($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID)){
+    $flight = new Flight($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+	if($flightCrud->create($flight)){
 		header("Location: add-flight.php?inserted");
 		exit();
 	} else {
