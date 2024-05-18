@@ -38,8 +38,9 @@ include_once 'crud_classes/staff.crud.php';
 include_once 'crud_classes/pilot.crud.php';
 include_once 'crud_classes/plane.crud.php';
 include_once 'crud_classes/passenger.crud.php';
-include_once 'crud_classes/booking.crud.php';
 include_once 'crud_classes/schedule.crud.php';
+include_once 'crud_classes/booking.crud.php';
+
 
 $flightCrud = new FlightCrud($database);
 $staff = new StaffCrud($database);
