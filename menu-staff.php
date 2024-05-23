@@ -26,10 +26,34 @@
             <th>Date of birth</th>
             <th>Number</th>
             <th>Address</th>
+            <th>Salary</th>
             <th colspan="2" align="center">Actions</th>
         </tr>
-        <?php    
-		  $staff->dataview(); 
+        <?php   
+        $staff = $staffCrud->getAll(10);
+        foreach ($staff as $row) {
+            ?>
+            <tr>
+                <td><?php echo ($row->getEmpNum()); ?></td>
+                <td><?php echo ($row->getSurname()); ?></td>
+                <td><?php echo ($row->getName()); ?></td>
+                <td><?php echo ($row->getDateOfBirth()); ?></td>
+                <td><?php echo ($row->getPhone()); ?></td>
+                <td><?php echo ($row->getAddress()); ?></td>
+                <td><?php echo ($row->getSalary()); ?></td>
+                <td align="center">
+                    <a href="edit-staff.php?edit_id=<?php echo ($row->getEmpNum()); ?>" class="btn btn-warning">
+                        <i class="glyphicon glyphicon-edit"></i> Edit
+                    </a>
+                </td>
+                <td align="center">
+                    <a href="delete-staff.php?delete_id=<?php echo ($row->getEmpNum()); ?>" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-remove-circle"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            <?php
+        } 
 	    ?>
     </table> 
 

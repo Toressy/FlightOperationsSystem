@@ -9,8 +9,9 @@ if(isset($_POST['btn-save'])){
 	$DATEOFBIRTH = $_POST['DATEOFBIRTH'];
     $PHONE = $_POST['PHONE'];
     $ADDRESS = $_POST['ADDRESS'];
-	
-	if($staff->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS)){
+    $SALARY = $_POST['SALARY'];
+	$staff = new Staff($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $SALARY);
+	if($staffCrud->create($staff)){
 		header("Location: add-staff.php?inserted");
 		exit();
 	} else {
@@ -63,12 +64,15 @@ if(isset($_GET['inserted'])){
         <tr>
             <td>ADDRESS</td><td><input type='text' name='ADDRESS' class='form-control' required></td>
         </tr>
+        <tr>
+            <td>Salary</td><td><input type='int' name='SALARY' class='form-control' required></td>
+        </tr>
         
         <tr>
             <td colspan="2">
             <button type="submit" class="btn btn-primary" name="btn-save">
-            <span class="glyphicon glyphicon-plus"></span> Add flight</button>
-            <a href="admin_start.php" class="btn btn-large btn-success" style="float: right;">
+            <span class="glyphicon glyphicon-plus"></span> Add staff</button>
+            <a href="menu-staff.php" class="btn btn-large btn-success" style="float: right;">
             <i class="glyphicon glyphicon-backward"></i> &nbsp; Back to menu</a>
             </td>
         </tr>

@@ -1,20 +1,41 @@
 <?php
 include_once("interface.crud.php");
-class planeCrud 
+
+class Plane 
+{
+	private $numSer;
+	private $aircraft;
+
+	public function __construct($numSer, $aircraft)
+	{
+		$this->numSer = $numSer;
+		$this->aircraft = $aircraft;
+	}
+
+	public function getNumSer(){
+		return $this->numSer;
+	}
+
+	public function getAircraft(){
+		return $this->aircraft;
+	}
+}
+class planeCrud implements CrudInterface
 {
 	private $db;
 	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
+	public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
 	
-	public function create($NUMSER, $AIRCRAFT) 
+	public function create($plane) 
 	{
+		$numSer = $plane->getNumSer();
+		$aircraft = $plane->getAircraft();
 		
 		$stmt = $this->db->prepare("INSERT INTO AIRPLANE(NUMSER, AIRCRAFT) 
 		VALUES(?, ?)");
-		$stmt->bind_param("is", $NUMSER, $AIRCRAFT);
+		$stmt->bind_param("is", $numSer, $aircraft);
 		return $stmt->execute();
 	}
 
@@ -29,15 +50,35 @@ class planeCrud
         return $result->fetch_assoc();
 	}
 
+	public function getAll($limit = 10) {
+        $query = "SELECT * FROM AIRPLANE LIMIT ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $planes = [];
+        while ($row = $result->fetch_assoc()) {
+            $numSer = $row['NUMSER'];
+            $aircraft = $row['AIRCRAFT'];
+            
+            $plane = new Plane($numSer, $aircraft);
+            $planes[] = $plane;
+        }
+        return $planes;
+    }
+
 	
 
 	
-	public function update($NUMSER,$AIRCRAFT)
+	public function update($plane)
 	{
+		$numSer = $plane->getNumSer();
+		$aircraft = $plane->getAircraft();
 		$stmt = $this->db->prepare("UPDATE AIRPLANE SET AIRCRAFT=? 
                                                         
                                     WHERE NUMSER=?");
-        $stmt->bind_param("si", $AIRCRAFT, $NUMSER);
+        $stmt->bind_param("si", $aircraft, $numSer);
         return $stmt->execute();
 	}
 

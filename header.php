@@ -40,6 +40,16 @@
                 <i class="glyphicon glyphicon-plus"></i> &nbsp; Review schedule
             </a>
         </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="menu-schedule.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review passenger
+            </a>
+        </div>
+        <div class="col-md-4 mb-3"> 
+            <a href="menu-schedule.php" class="btn btn-large btn-info btn-block">
+                <i class="glyphicon glyphicon-plus"></i> &nbsp; Review booking
+            </a>
+        </div>
         
     </div>
 </div>

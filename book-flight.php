@@ -8,8 +8,10 @@ if(isset($_POST['btn-save'])){
     $FLIGHTNUM = $_POST['FLIGHTNUM'];
 	$SEAT = $_POST['SEAT'];
 	$CLASS = $_POST['CLASS'];
+    $booking = new Booking($PASSPORT, $FLIGHTNUM, $SEAT, $CLASS);
+
 	
-	if($booking->create( $PASSPORT, $FLIGHTNUM, $SEAT, $CLASS)){
+	if($bookingCrud->create( $booking)){
 		header("Location: pass-booking.php?passport=$PASSPORT");
 		exit();
 	} else {

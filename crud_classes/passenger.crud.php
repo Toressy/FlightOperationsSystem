@@ -4,27 +4,63 @@
 <?php
 include_once("interface.crud.php");
 
-class passengerCrud 
+class Passenger {
+    private $passport;
+    private $surname;
+    private $name;
+    private $phone;
+    private $address;
+
+    public function __construct($passport, $surname, $name, $phone, $address) {
+        $this->passport = $passport;
+        $this->surname = $surname;
+        $this->name = $name;
+        $this->phone = $phone;
+        $this->address = $address;
+    }
+    public function getPassport() {
+        return $this->passport;
+    }
+    public function getSurname() {
+        return $this->surname;
+    }
+    public function getName() {
+        return $this->name;
+    }
+    public function getPhone() {
+        return $this->phone;
+    }
+    public function getAddress() {
+        return $this->address;
+    }
+}
+class passengerCrud implements CrudInterface
 {
 	private $db;
 	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
+	public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
 	
 	
 
-	public function create($PASSPORT, $SURNAME, $NAME, $PHONE, $ADDRESS)
+	public function create($passenger)
 	{
-		$existing = $this->getID($PASSPORT);
+		$existing = $this->getID($passenger->getPassport());
 
         if ($existing) {
             return false;
         }
+
+        $passport = $passenger->getPassport();
+        $surname = $passenger->getSurname();
+        $name = $passenger->getName();
+        $phone = $passenger->getPhone();
+        $address = $passenger->getAddress();
+
 		$stmt = $this->db->prepare("INSERT INTO PASSENGER (PASSPORT, SURNAME, NAME, PHONE, ADDRESS) 
 		VALUES(?, ?, ?, ?, ?)");
-		$stmt->bind_param("sssss", $PASSPORT, $SURNAME, $NAME, $PHONE, $ADDRESS);
+		$stmt->bind_param("sssss", $passport, $surname, $name, $phone, $address);
 		return $stmt->execute();
 	}
 
@@ -43,6 +79,27 @@ class passengerCrud
         return $result->fetch_assoc();
 	}
 
+    public function getAll($limit = 10) {
+        $query = "SELECT * FROM PASSENGER LIMIT ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $passengers = [];
+        while ($row = $result->fetch_assoc()) {
+            $passport = $row["PASSPORT"];
+            $surname = $row["SURNAME"];
+            $name = $row["NAME"];
+            $phone = $row["PHONE"];
+            $address = $row["ADDRESS"];
+            $passenger = new Passenger($passport, $surname, $name, $phone, $address);
+            $passengers[] = $passenger;
+        }
+        return $passengers;
+        
+    }
+
 	
 
 	
@@ -52,7 +109,7 @@ class passengerCrud
 
 
 	
-	public function update($PASSPORT,$SURNAME, $NAME, $PHONE, $ADDRESS)
+	public function update($passenger)
 	{
         
 		$stmt1 = $this->db->prepare("UPDATE PASSENGER SET  SURNAME=?, 

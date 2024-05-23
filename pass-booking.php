@@ -21,13 +21,10 @@
 // Check if passport is provided in the URL
 if(isset($_GET['passport'])) {
     $PASSPORT = $_GET['passport'];
-
-   
-
     ?>
     <br />
     <div class="container"> 
-        <h2>Bookings for you <?php echo $PASSPORT; ?></h2>
+        <h2>Bookings for you:  <?php echo $PASSPORT; ?></h2>
         <table class='table table-bordered table-responsive'> 
             <tr>
                 <th>Booking ID</th>
@@ -40,7 +37,7 @@ if(isset($_GET['passport'])) {
             </tr>
             <?php    
             // Fetch and display booking data associated with the passport
-            $booking->bookingDataview($PASSPORT); 
+            $bookingCrud->bookingDataview($PASSPORT); 
             ?>
         </table> 
     </div>

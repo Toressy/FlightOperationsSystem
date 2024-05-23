@@ -1,22 +1,60 @@
 <?php
 include_once("interface.crud.php");
+
+class Booking 
+{
+ 
+    private $passport;
+    private $flightNum;
+    private $seat;
+    private $class;
+
+    public function __construct( $passport, $flightNum, $seat, $class){
+     
+        $this->passport = $passport;
+        $this->flightNum = $flightNum;
+        $this->seat = $seat;
+        $this->class = $class;
+    }
+   
+    public function getPassport(){
+        return $this->passport;
+    }
+    public function getFlightNum(){
+        return $this->flightNum;
+    }
+    public function getSeat(){
+        return $this->seat;
+    }
+    public function getClass(){
+        return $this->class;
+    }
+
+}
 class bookingCrud 
 {
 	private $db;
 	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
+	public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
 	
 	
 
-	public function create( $PASSPORT, $FRIGHTNUM, $SEAT, $CLASS)
+	public function create( $booking)
 	{
+       
+
+        
+        $passport = $booking->getPassport();
+        $flightNumber = $booking->getFlightNumber();
+        $seat = $booking->getSeat();
+        $class = $booking->getClass();
+
 		
 		$stmt = $this->db->prepare("INSERT INTO BOOKING (PASSPORT, FRIGHTNUM, SEAT, CLASS) 
 		VALUES(?, ?, ?, ?)");
-		$stmt->bind_param("ssss", $PASSPORT, $FRIGHTNUM, $SEAT, $CLASS);
+		$stmt->bind_param("ssss", $passport, $flightNumber, $seat, $class);
 		return $stmt->execute();
 	}
 
@@ -34,6 +72,11 @@ class bookingCrud
         $result = $stmt->get_result();
         return $result->fetch_assoc();
 	}
+
+    public function getAll($limit = 10)
+    {
+
+    }
 
 	
 

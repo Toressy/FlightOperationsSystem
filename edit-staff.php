@@ -8,10 +8,12 @@ if(isset($_POST['btn-update'])) {
     $DATEOFBIRTH = $_POST['DATEOFBIRTH'];
     $PHONE = $_POST['PHONE'];
     $ADDRESS = $_POST['ADDRESS'];
+    $SALARY  = $_POST['SALARY'];
+    $staff = new Staff($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $SALARY);
 
     
 
-    if($staff->update($EMPNUM, $SURNAME,  $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS)) {
+    if($staffCrud->update($staff)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -24,12 +26,13 @@ if(isset($_POST['btn-update'])) {
 
 if(isset($_GET['edit_id'])) {
     $EMPNUM = $_GET['edit_id'];
-    $staffget = $staff->getID($EMPNUM);
-    $SURNAME = $staffget['SURNAME'];
-    $NAME = $staffget['NAME'];
-    $DATEOFBIRTH = $staffget['DATEOFBIRTH'];
-    $PHONE = $staffget['PHONE'];
-    $ADDRESS = $staffget['ADDRESS'];
+    $staffget = $staffCrud->getID($EMPNUM);
+    $SURNAME = $staffget->getSurname();
+    $NAME = $staffget->getName();
+    $DATEOFBIRTH = $staffget->getDateOfBirth();
+    $PHONE = $staffget->getPhone();
+    $ADDRESS = $staffget->getAddress();
+    $SALARY = $staffget->getSalary();
     
 }
 
@@ -73,6 +76,10 @@ include_once 'header.php';
             <tr>
                 <td>ADDRESS</td>
                 <td><input type='text' name='ADDRESS' class='form-control' value="<?php echo $ADDRESS; ?>" required></td>
+            </tr>
+            <tr>
+                <td>SALARY</td>
+                <td><input type='number' name='SALARY' class='form-control' value="<?php echo $SALARY; ?>" required></td>
             </tr>
            
     

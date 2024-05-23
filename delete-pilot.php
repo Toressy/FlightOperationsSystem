@@ -5,7 +5,7 @@ include_once 'dbconfig.php';
 if(isset($_POST['btn-del'])) {
     if(isset($_GET['delete_id'])) {
         $EMPNUM = $_GET['delete_id'];
-        if ($pilot->delete($EMPNUM)) {
+        if ($pilotCrud->delete($EMPNUM)) {
             header("Location: delete-pilot.php?deleted"); // Redirect after successful deletion
             exit();
         } else {
@@ -43,7 +43,7 @@ include_once 'header.php';
     <?php
     if(isset($_GET['delete_id'])) {
         $EMPNUM = $_GET['delete_id'];
-        $row = $pilot->getID($EMPNUM);
+        $row = $pilotCrud->getID($EMPNUM);
         if ($row) {
             ?>
             <table class='table table-bordered'>

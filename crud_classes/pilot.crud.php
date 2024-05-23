@@ -1,35 +1,45 @@
 <?php
 include_once("interface.crud.php");
 
-class pilotCrud 
-{
+class Pilot {
+    private $empNum;
+    private $totalFlightHours;
+
+    public function __construct($empNum, $totalFlightHours) {
+        $this->empNum = $empNum;
+        $this->totalFlightHours = $totalFlightHours;
+    }
+    public function getEmpNum() {
+        return $this->empNum;
+    }
+    public function getTotalFlightHours() { 
+        return $this->totalFlightHours;
+    }
+}
+
+class pilotCrud implements CrudInterface{
+
 	private $db;
 	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
+	public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
 	
 	
 
-	public function create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)
+	public function create($pilot)
 	{
-		$existing = $this->getID($EMPNUM);
+		if ($this->getID($pilot->getEmpNum())) {return false;}
 
-        if ($existing) {
-            return false;
-        }
-		$staffCrudObj = new staffCrud($this->db);
+        
+		$empNum = $pilot->getEmpNum();
+        $totalFLightHours = $pilot->getTotalFlightHours();
         
         // Call create method from staffCrud
-        $staffCreateResult = $staffCrudObj->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS);
-
-        if (!$staffCreateResult) {
-            return false; // Handle if staff creation fails
-        }
+        
         $stmt = $this->db->prepare("INSERT INTO PILOT (EMPNUM, TOTALFLIGHTHOURS) 
 		VALUES(?, ?)");
-        $stmt->bind_param("ii", $EMPNUM,  $TOTALFLIGHTHOURS);
+        $stmt->bind_param("ii", $empNum,  $totalFLightHours);
         return $stmt->execute();
 
 	}
@@ -48,25 +58,18 @@ class pilotCrud
 	}
 
 	
-	public function update($EMPNUM,$SURNAME, $NAME,$DATEOFBIRTH,$PHONE, $ADDRESS,  $TOTALFLIGHTHOURS)
+	public function update($pilot)
 	{
+        $empNum = $pilot->getEmpNum();
+        $totalFLightHours = $pilot->getTotalFlightHours();
 
-        $staffCrudObj = new staffCrud($this->db);
-        
-        // Call update method from staffCrud
-        $staffUpdateResult = $staffCrudObj->update($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS);
 
-        if (!$staffUpdateResult) {
-            return false; // Handle if staff update fails
-        }
-
-        
 		
         $stmt1 = $this->db->prepare("UPDATE PILOT SET  TOTALFLIGHTHOURS=?
 														
 													
                                     WHERE EMPNUM=?");
-        $stmt1->bind_param("ii", $TOTALFLIGHTHOURS, $EMPNUM);
+        $stmt1->bind_param("ii", $totalFLightHours, $empNum);
         return $stmt1->execute();
         /*
         $stmt2 = $this->db->prepare("UPDATE STAFFPHONE SET  PHONENUMBER=?, 
@@ -85,14 +88,7 @@ class pilotCrud
 	
 	public function delete($EMPNUM) 
 {
-    $staffCrudObj = new staffCrud($this->db);
-        
-    // Call delete method from staffCrud
-    $staffDeleteResult = $staffCrudObj->delete($EMPNUM);
-
-    if (!$staffDeleteResult) {
-        return false; // Handle if staff delete fails
-    }
+    
     $stmt = $this->db->prepare("DELETE FROM PILOT WHERE EMPNUM=?");
     $stmt->bind_param("i", $EMPNUM);
     return $stmt->execute();
@@ -103,48 +99,23 @@ class pilotCrud
 	
 	
 	
-	public function dataview() 
-	{
-		$query = "SELECT s.*, p.TOTALFLIGHTHOURS
-        FROM STAFF s 
-        LEFT JOIN PILOT p ON s.EMPNUM = p.EMPNUM 
-        LIMIT 10";
-		$result = $this->db->query($query);
+public function getAll($limit = 10) {
+    $query = "SELECT * FROM PILOT LIMIT ?";
+    $stmt = $this->db->prepare($query);
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                ?>
-                <tr>
-                    <td><?php echo $row['EMPNUM']; ?></td>
-                    <td><?php echo $row['SURNAME']; ?></td>
-                    <td><?php echo $row['NAME']; ?></td>
-                    <td><?php echo $row['DATEOFBIRTH']; ?></td>
-                    <td><?php echo $row['PHONE']; ?></td>
-                    <td><?php echo $row['ADDRESS']; ?></td>
-                    <td><?php echo $row['TOTALFLIGHTHOURS']; ?></td>
-                    <td align="center">
-						<a href="edit-pilot.php?edit_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-warning">
-							<i class="glyphicon glyphicon-edit"></i> Edit
-						</a>
-					</td>
-					<td align="center">
-						<a href="delete-staff.php?delete_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-danger">
-							<i class="glyphicon glyphicon-remove-circle"></i> Delete
-						</a>
-					</td>
-
-					
-                </tr>
-                <?php
-            }
-        } else {
-            ?>
-            <tr>
-                <td colspan="7">No flight found...</td>
-            </tr>
-            <?php
-        }
-	}	
+    $pilotList = [];
+    while ($row = $result->fetch_assoc()) {
+        $pilot = new Pilot(
+            $row['EMPNUM'],
+            $row['TOTALFLIGHTNOURS']
+        );
+        $pilotList[] = $pilot;
+    }
+    return $pilotList;
+}
 
 
 

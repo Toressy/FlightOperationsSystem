@@ -1,7 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 
-
-<?php include_once 'header.php'; ?> 
-
+include_once 'header.php'; 
+?>
 
 </br>
 <div class="container">
@@ -11,11 +16,8 @@
                 <i class="glyphicon glyphicon-plus"></i> &nbsp; Add flight
             </a>
         </div>
-        
-        
     </div>
 </div>
-
 
 <br />
 <div class="container"> 
@@ -30,14 +32,10 @@
             <th>Pilot</th>
             <th>Gate</th>
             <th>Schedule ID</th>
-            <th colspan="2" align="center">Actions</th>
-            
+            <th colspan="2" align="center">Actions</th> 
         </tr>
         <?php   
-
-
         $flights = $flightCrud->getAll(10);
-
         foreach ($flights as $row) {
             ?>
             <tr>
@@ -56,16 +54,14 @@
                     </a>
                 </td>
                 <td align="center">
-                    <a href="delete.php?delete_id=<?php echo ($row->getFlightNum()); ?>" class="btn btn-danger">
+                    <a href="delete-flight.php?delete_id=<?php echo ($row->getFlightNum()); ?>" class="btn btn-danger">
                         <i class="glyphicon glyphicon-remove-circle"></i> Delete
                     </a>
                 </td>
             </tr>
             <?php
         } 
-		 
 	    ?>
     </table> 
-
 </div>
 <?php include_once 'footer.php'; ?> 

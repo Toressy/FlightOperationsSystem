@@ -27,7 +27,26 @@
             <th colspan="2" align="center">Actions</th>
         </tr>
         <?php    
-		  $plane->dataview(); 
+		$planeCrud = $planeCrud->getAll(10);
+        foreach ($plane as $row) {
+            ?>
+            <tr>
+                <td><?php echo $row->getNumSer; ?></td>
+                <td><?php echo $row->getAircraft; ?></td>
+                
+                <td align="center">
+                    <a href="edit-plane.php?edit_id=<?php echo $row->getNumSer; ?>" class="btn btn-warning">
+                        <i class="glyphicon glyphicon-edit"></i> Edit
+                    </a>
+                </td>
+                <td align="center">
+                    <a href="delete-plane.php?delete_id=<?php echo $row->getNumSer; ?>" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-remove-circle"></i> Delete
+                    </a>
+                </td>   
+        </tr>
+        <?php
+        }
 	    ?>
     </table> 
 

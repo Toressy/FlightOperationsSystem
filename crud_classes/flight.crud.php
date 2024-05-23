@@ -68,18 +68,22 @@ class FlightCrud implements CrudInterface{
         $stmt->bind_param("s", $flightNum);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
+        if (!$result) {
+            return null;
+        }
 
-        $FLIGHTNUM = $flightNum ;
-        $ORIGIN = $result['ORIGIN'];
-        $DESTINATION = $result['DESTINATION'];
-        $DEPTIME = $result['DEPTIME'];
-        $ARRTIME = $result['ARRTIME'];
-        $AIRPLANE = $result['AIRPLANE'];
-        $PILOT = $result['PILOT'];
-        $GATE = $result['GATE'];
-        $SCHEDULEID = $result['SCHEDULEID'];
-
-        return new Flight ($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+        return new Flight(
+            $result['FLIGHTNUM'],
+            $result['ORIGIN'],
+            $result['DESTINATION'],
+            $result['DEPTIME'],
+            $result['ARRTIME'],
+            $result['AIRPLANE'],
+            $result['PILOT'],
+            $result['GATE'],
+            $result['SCHEDULEID']
+        );
+       
     }
     
     public function getAll($limit = 10) {

@@ -2,7 +2,9 @@
 include_once 'dbconfig.php';
 
 if(isset($_POST['btn-update'])) {
+    // Retrieve flight number from the URL
     $FLIGHTNUM = $_GET['edit_id'];
+    // Retrieve form data
     $ORIGIN = $_POST['ORIGIN'];
     $DESTINATION = $_POST['DESTINATION'];
     $DEPTIME = $_POST['DEPTIME'];
@@ -11,7 +13,10 @@ if(isset($_POST['btn-update'])) {
     $PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
     $SCHEDULEID = $_POST['SCHEDULEID'];
+    
+    // Create a new Flight object with the retrieved data
     $flight = new Flight($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+    // Attempt to update the flight information in the database
     if($flightCrud->update($flight)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
@@ -24,9 +29,12 @@ if(isset($_POST['btn-update'])) {
 }
 
 if(isset($_GET['edit_id'])) {
+    // Retrieve flight number from the URL
     $FLIGHTNUM = $_GET['edit_id'];
+     // Get flight details by ID
     $flightget = $flightCrud->getID($FLIGHTNUM);
-    
+
+     // Retrieve flight details
     $ORIGIN = $flightget->getOrigin();
     $DESTINATION = $flightget->getDestination();
     $DEPTIME = $flightget->getDepTime();

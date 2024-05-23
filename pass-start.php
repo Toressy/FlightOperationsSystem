@@ -6,7 +6,7 @@ if(isset($_POST['login'])) {
     $PASSPORT = $_POST['PASSPORT'];
     
     // Check if the passport exists in the database
-    $passengerData = $passenger->login($PASSPORT);
+    $passengerData = $passengerCrud->login($PASSPORT);
     
     if($passengerData) {
         // Passport exists, redirect to booking page or perform further actions
@@ -25,8 +25,10 @@ elseif (isset($_POST['btn-save'])){
     $NAME = $_POST['NAME'];
     $PHONE = $_POST['PHONE'];
     $ADDRESS = $_POST['ADDRESS'];
+    $passenger = new Passenger($PASSPORT, $SURNAME, $NAME, $PHONE, $ADDRESS);
+
 	
-	if($passenger->create($PASSPORT, $SURNAME, $NAME, $PHONE, $ADDRESS)){
+	if($passengerCrud->create($passenger)) {
 		header("Location: pass-booking.php?passport=$PASSPORT");
 		exit();
 	} else {
@@ -68,14 +70,14 @@ if(isset($_GET['inserted'])){
         </tr>
 
         <tr>
-            <td>NAME</td><td><input type='text' name='NAME' class='form-control' required></td>
+            <td>NAME</td><td><input type='text' name='NAME' class='form-control' ></td>
         </tr>
         
         <tr>
-            <td>PHONE</td><td><input type='text' name='PHONE' class='form-control' required></td>
+            <td>PHONE</td><td><input type='text' name='PHONE' class='form-control' ></td>
         </tr>
         <tr>
-            <td>ADDRESS</td><td><input type='text' name='ADDRESS' class='form-control' required></td>
+            <td>ADDRESS</td><td><input type='text' name='ADDRESS' class='form-control' ></td>
         </tr>
         
         <tr>

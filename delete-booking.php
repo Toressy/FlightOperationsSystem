@@ -5,7 +5,7 @@ include_once 'dbconfig.php';
 if(isset($_POST['btn-del'])) {
     if(isset($_GET['delete_id'])) {
         $BOOKINGID = $_GET['delete_id'];
-        if ($booking->delete($BOOKINGID)) {
+        if ($bookingCrud->delete($BOOKINGID)) {
             header("Location: delete-booking.php?deleted"); // Redirect after successful deletion
             exit();
         } else {
@@ -43,7 +43,7 @@ include_once 'header-pass.php';
     <?php
     if(isset($_GET['delete_id'])) {
         $BOOKINGID = $_GET['delete_id'];
-        $row = $booking->getID($BOOKINGID);
+        $row = $bookingCrud->getID($BOOKINGID);
         if ($row) {
             ?>
             <table class='table table-bordered'>

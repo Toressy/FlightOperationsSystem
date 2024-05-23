@@ -12,7 +12,7 @@ if(isset($_POST['btn-update'])) {
 
     
 
-    if($pilot->update($EMPNUM, $SURNAME,  $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)) {
+    if($pilotCrud->update($EMPNUM, $SURNAME,  $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -25,7 +25,7 @@ if(isset($_POST['btn-update'])) {
 
 if(isset($_GET['edit_id'])) {
     $EMPNUM = $_GET['edit_id'];
-    $pilotget = $pilot->getID($EMPNUM);
+    $pilotget = $pilotCrud->getID($EMPNUM);
     $SURNAME = $pilotget['SURNAME'];
     $NAME = $pilotget['NAME'];
     $DATEOFBIRTH = $pilotget['DATEOFBIRTH'];

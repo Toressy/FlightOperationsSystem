@@ -6,7 +6,7 @@ if(isset($_POST['btn-update'])) {
     $AIRCRAFT = $_POST['AIRCRAFT'];
     
 
-    if($plane->update($NUMSER, $AIRCRAFT)) {
+    if($planeCrud->update($NUMSER, $AIRCRAFT)) {
         $msg = "<div class='alert alert-info'>
                 Modification successful
                 </div>";
@@ -19,7 +19,7 @@ if(isset($_POST['btn-update'])) {
 
 if(isset($_GET['edit_id'])) {
     $NUMSER = $_GET['edit_id'];
-    $planeget = $plane->getID($NUMSER);
+    $planeget = $planeCrud->getID($NUMSER);
     
     $AIRCRAFT = $planeget['AIRCRAFT'];
     

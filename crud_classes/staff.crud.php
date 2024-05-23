@@ -1,150 +1,131 @@
 <?php
 include_once("interface.crud.php");
 
-class staffCrud 
-{
-	private $db;
-	
-	function __construct($mysqli)
-	{
-		$this->db = $mysqli;
-	}
-	
-	
+class Staff {
+    private $empNum;
+    private $surname;
+    private $name;
+    private $dateOfBirth;
+    private $phone;
+    private $address;
+    private $salary;
 
-	public function create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS)
-	{
-		$existing = $this->getID($EMPNUM);
+    public function __construct($empNum, $surname, $name, $dateOfBirth, $phone, $address, $salary) {
+        $this->empNum = $empNum;
+        $this->surname = $surname;
+        $this->name = $name;
+        $this->dateOfBirth = $dateOfBirth;
+        $this->phone = $phone;
+        $this->address = $address;
+        $this->salary = $salary;
+    }
 
-        if ($existing) {
+    public function getEmpNum() { return $this->empNum; }
+    public function getSurname() { return $this->surname; }
+    public function getName() { return $this->name; }
+    public function getDateOfBirth() { return $this->dateOfBirth; }
+    public function getPhone() { return $this->phone; }
+    public function getAddress() { return $this->address; }
+    public function getSalary() { return $this->salary; }
+}
+
+class StaffCrud implements CrudInterface {
+    private $db;
+
+    public function __construct(Database $database) {
+        $this->db = $database->getConnection();
+    }
+
+    public function create($staff) {
+        if ($this->getId($staff->getEmpNum())) {
             return false;
         }
-		$stmt = $this->db->prepare("INSERT INTO STAFF (EMPNUM, SURNAME, NAME, DATEOFBIRTH, PHONE, ADDRESS) 
-		VALUES(?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("isssss", $EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS);
-		return $stmt->execute();
-	}
 
+        $empNum = $staff->getEmpNum();
+        $surname = $staff->getSurname();
+        $name = $staff->getName();
+        $dateOfBirth = $staff->getDateOfBirth();
+        $phone = $staff->getPhone();
+        $address = $staff->getAddress();
+        $salary = $staff->getSalary();
 
+        $stmt = $this->db->prepare("INSERT INTO STAFF (EMPNUM, SURNAME, NAME, DATEOFBIRTH, PHONE, ADDRESS, SALARY) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isssssi", $empNum, $surname, $name, $dateOfBirth, $phone, $address, $salary);
+        return $stmt->execute();
+    }
 
-	
+    public function getId($empNum) {
+        $stmt = $this->db->prepare("SELECT * FROM STAFF WHERE EMPNUM=?");
+        $stmt->bind_param("i", $empNum);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        if (!$result) {
+            return null;
+        }
 
+        return new Staff(
+            $result['EMPNUM'],
+            $result['SURNAME'],
+            $result['NAME'],
+            $result['DATEOFBIRTH'],
+            $result['PHONE'],
+            $result['ADDRESS'],
+            $result['SALARY']
+        );
+    }
 
-	
-	public function getID($EMPNUM)  
-	{
-		$stmt = $this->db->prepare("SELECT * FROM STAFF WHERE EMPNUM=?");
-        $stmt->bind_param("i", $EMPNUM);
+    public function getAll($limit = 10) {
+        $query = "SELECT * FROM STAFF LIMIT ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $limit);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
-	}
 
-    public function getFlight($EMPNUM)
-    {
+        $staffList = [];
+        while ($row = $result->fetch_assoc()) {
+            $staff = new Staff(
+                $row['EMPNUM'],
+                $row['SURNAME'],
+                $row['NAME'],
+                $row['DATEOFBIRTH'],
+                $row['PHONE'],
+                $row['ADDRESS'],
+                $row['SALARY']
+            );
+            $staffList[] = $staff;
+        }
+        return $staffList;
+    }
+
+    public function update($staff) {
+        $empNum = $staff->getEmpNum();
+        $surname = $staff->getSurname();
+        $name = $staff->getName();
+        $dateOfBirth = $staff->getDateOfBirth();
+        $phone = $staff->getPhone();
+        $address = $staff->getAddress();
+        $salary = $staff->getSalary();
+
+        $stmt = $this->db->prepare("UPDATE STAFF SET SURNAME=?, NAME=?, DATEOFBIRTH=?, PHONE=?, ADDRESS=?, SALARY=? WHERE EMPNUM=?");
+        $stmt->bind_param("ssssssi", $surname, $name, $dateOfBirth, $phone, $address, $salary, $empNum);
+        return $stmt->execute();
+    }
+
+    public function delete($empNum) {
+        $stmt = $this->db->prepare("DELETE FROM STAFF WHERE EMPNUM=?");
+        $stmt->bind_param("i", $empNum);
+        return $stmt->execute();
+    }
+
+    public function getFlight($empNum) {
         $stmt = $this->db->prepare("SELECT FLIGHT.FLIGHTNUM, FLIGHT.ORIGIN, FLIGHT.DESTINATION, FLIGHT.DEPTIME, FLIGHT.ARRTIME 
         FROM FLIGHT
         INNER JOIN CREW ON FLIGHT.FLIGHTNUM = CREW.FLIGHTNUM
-        WHERE CREW.EMPNUM = ?;
-        ");
-        $stmt->bind_param("i", $EMPNUM);
+        WHERE CREW.EMPNUM = ?");
+        $stmt->bind_param("i", $empNum);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
-
-	
-
-	
-
-		
-
-
-
-	
-	public function update($EMPNUM,$SURNAME, $NAME,$DATEOFBIRTH, $PHONE, $ADDRESS)
-	{
-        
-		$stmt1 = $this->db->prepare("UPDATE STAFF SET  SURNAME=?, 
-                                                        NAME=?, 
-                                                        DATEOFBIRTH=?,
-                                                        PHONE = ?,
-                                                        ADDRESS=?
-														
-													
-                                    WHERE EMPNUM=?");
-        $stmt1->bind_param("sssssi", $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $EMPNUM );
-        $result = $stmt1->execute();
-        $stmt1->close();/*
-        $stmt2 = $this->db->prepare("UPDATE STAFFPHONE SET  PHONENUMBER=?, 
-                                    WHERE EMPNUM=?");
-        $stmt2->bind_param("si", $PHONENUMBER, $EMPNUM);
-        $stmt2->execute();
-        $stmt3 = $this->db->prepare("UPDATE STAFFADDRESS SET  ADDRESS=?, 
-                                    WHERE EMPNUM=?");
-        $stmt3->bind_param("si", $ADDRESS, $EMPNUM);*/
-        return $result;
-
-        
-	}
-
-	
-	
-	public function delete($EMPNUM) 
-{
-   
-    $stmt = $this->db->prepare("DELETE FROM STAFF WHERE EMPNUM=?");
-    $stmt->bind_param("i", $EMPNUM);
-    $result = $stmt->execute();
-    $stmt->close();
-
-    return $result;
-}
-    
-	
-	
-	
-	public function dataview() 
-	{
-		$query = "SELECT * FROM STAFF LIMIT 10";
-		$result = $this->db->query($query);
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                ?>
-                <tr>
-                    <td><?php echo $row['EMPNUM']; ?></td>
-                    <td><?php echo $row['SURNAME']; ?></td>
-                    <td><?php echo $row['NAME']; ?></td>
-                    <td><?php echo $row['DATEOFBIRTH']; ?></td>
-
-                    <td><?php echo $row['PHONE']; ?></td>
-                    <td><?php echo $row['ADDRESS']; ?></td>
-                    <td align="center">
-						<a href="edit-staff.php?edit_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-warning">
-							<i class="glyphicon glyphicon-edit"></i> Edit
-						</a>
-					</td>
-					<td align="center">
-						<a href="delete-staff.php?delete_id=<?php echo $row['EMPNUM']; ?>" class="btn btn-danger">
-							<i class="glyphicon glyphicon-remove-circle"></i> Delete
-						</a>
-					</td>
-
-					
-                </tr>
-                <?php
-            }
-        } else {
-            ?>
-            <tr>
-                <td colspan="7">No flight found...</td>
-            </tr>
-            <?php
-        }
-	}	
-
-
-
 }
 ?>

@@ -12,7 +12,7 @@ if(isset($_POST['btn-save'])){
 
     $TOTALFLIGHTHOURS = $_POST['TOTALFLIGHTHOURS'];
 	
-	if($pilot->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)){
+	if($pilotCrud->create($EMPNUM, $SURNAME, $NAME, $DATEOFBIRTH, $PHONE, $ADDRESS, $TOTALFLIGHTHOURS)){
 		header("Location: add-pilot.php?inserted");
 		exit();
 	} else {

@@ -6,7 +6,7 @@ if(isset($_POST['btn-save'])){
     $NUMSER = $_POST['NUMSER'];
     $AIRCRAFT = $_POST['AIRCRAFT'];
 	
-	if($plane->create($NUMSER, $AIRCRAFT)){
+	if($planeCrud->create($NUMSER, $AIRCRAFT)){
 		header("Location: add-plane.php?inserted");
 		exit();
 	} else {

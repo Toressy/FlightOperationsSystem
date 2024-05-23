@@ -8,7 +8,7 @@ if(isset($_GET['empnumber']) && !empty($_GET['empnumber'])) {
     $EMPNUM = $_GET['empnumber'];
 
     // Call the getFlight function to retrieve flights assigned to the staff
-    $flights = $staff->getFlight($EMPNUM);
+    $flights = $staffCrud->getFlight($EMPNUM);
 } else {
     $EMPNUM = null;
     $flights = null;

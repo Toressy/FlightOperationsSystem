@@ -3,6 +3,7 @@
 include_once 'dbconfig.php';
 
 if(isset($_POST['btn-save'])){
+    // Retrieve form data
     $FLIGHTNUM = $_POST['FLIGHTNUM'];
     $ORIGIN = $_POST['ORIGIN'];
     $DESTINATION = $_POST['DESTINATION'];
@@ -12,7 +13,9 @@ if(isset($_POST['btn-save'])){
 	$PILOT = $_POST['PILOT'];
     $GATE = $_POST['GATE'];
     $SCHEDULEID = $_POST['SCHEDULEID'];
+    // Create a new Flight object with the retrieved data
     $flight = new Flight($FLIGHTNUM, $ORIGIN, $DESTINATION, $DEPTIME, $ARRTIME, $AIRPLANE, $PILOT, $GATE, $SCHEDULEID);
+    // Attempt to add the flight information in the database
 	if($flightCrud->create($flight)){
 		header("Location: add-flight.php?inserted");
 		exit();
@@ -48,7 +51,7 @@ if(isset($_GET['inserted'])){
 	<form method='post'>
     <table class='table table-bordered'>
         <tr>
-            <td>Flight number</td><td><input type='number' name='FLIGHTNUM' class='form-control' required></td>
+            <td>Flight number</td><td><input type='text' name='FLIGHTNUM' class='form-control' required></td>
         </tr>
         <tr>
             <td>Origin</td><td><input type='text' name='ORIGIN' class='form-control' required></td>

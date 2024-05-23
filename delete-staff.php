@@ -4,7 +4,7 @@ include_once 'dbconfig.php';
 
 if(isset($_POST['btn-del'])) {
     $EMPNUM = $_GET['delete_id'];
-    $staff->delete($EMPNUM);
+    $staffCrud->delete($EMPNUM);
     header("Location: delete-staff.php?deleted"); 
     exit();
 }
@@ -34,7 +34,7 @@ include_once 'header.php';
     <?php
     if(isset($_GET['delete_id'])) {
         $EMPNUM = $_GET['delete_id'];
-        $row = $staff->getID($EMPNUM);
+        $row = $staffCrud->getID($EMPNUM);
         ?>
         <table class='table table-bordered'>
             <tr>
@@ -44,20 +44,22 @@ include_once 'header.php';
                 <th>Date of birth</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Salary</th>
             </tr>
             <tr>
-                <td><?php echo $row['EMPNUM']; ?></td>
-                <td><?php echo $row['SURNAME']; ?></td>
-                <td><?php echo $row['NAME']; ?></td>
-                <td><?php echo $row['DATEOFBIRTH']; ?></td>
-                <td><?php echo $row['PHONE']; ?></td>
-                <td><?php echo $row['ADDRESS']; ?></td>
+                <td><?php echo $row->getEmpNum(); ?></td>
+                <td><?php echo $row->getSurname(); ?></td>
+                <td><?php echo $row->getName(); ?></td>
+                <td><?php echo $row->getDateOfBirth(); ?></td>
+                <td><?php echo $row->getPhone(); ?></td>
+                <td><?php echo $row->getAddress() ?></td>
+                <td><?php echo $row->getSalary() ?></td>
 
                 
             </tr>
         </table>
         <form method="post">
-            <input type="hidden" name="EMPNUM" value="<?php echo $row['EMPNUM']; ?>" />
+            <input type="hidden" name='delete_id' value="<?php echo $row->getEmpNum(); ?>" />
             <button class="btn btn-large btn-primary" type="submit" name="btn-del">
             <i class="glyphicon glyphicon-trash"></i> &nbsp; Yes</button>
             <a href="menu-staff.php" class="btn btn-large btn-success">
