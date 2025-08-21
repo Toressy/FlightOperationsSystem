@@ -25,7 +25,7 @@ FlightOperationsSystem is a comprehensive web-based flight management platform b
 ## 🛠 Requirements
 
 - PHP 7.x or newer
-- MySQL or MariaDB
+- MySQL
 - Web server (XAMPP, WAMP, LAMP)
 
 ## 🚀 Setup Instructions
